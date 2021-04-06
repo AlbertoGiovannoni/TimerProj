@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "Timer.h"
+#include <ncurses.h>
 
 
 using namespace std;
