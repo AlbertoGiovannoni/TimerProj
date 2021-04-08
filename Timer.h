@@ -18,12 +18,17 @@ public:
         int getDuration();
         bool setDuration(unsigned int seconds);
 
+        bool startTimer();
+        bool stopTimer();
+
+        bool isRunning();
 
 private:
     bool running;
     time_point<steady_clock> start;
     ::duration<int, milli> duration;
 
+    static const int secInDay;
 };
 
 

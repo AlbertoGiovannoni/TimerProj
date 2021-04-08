@@ -8,6 +8,8 @@
 using namespace std;
 using namespace std::chrono;
 
+const int Timer::secInDay = 24*60*60;
+
 Timer::Timer() {
     start = steady_clock::now();
     duration = ::duration<int>::zero();
@@ -26,10 +28,20 @@ int Timer::getDuration() {
     else{
         time_point<steady_clock> now = steady_clock::now();
         float r = ((duration - duration_cast<milliseconds>(now-start)).count()/1000.f);
-        int remaining = r >= 0 ? (int)ceil(r) : (int)floor(r);
+        int remaining = (int)ceil(r);
         if (remaining < 0){
             remaining = 0;
         }
         return remaining;
+    }
+}
+
+bool Timer::setDuration(const unsigned int seconds) {
+    if(!running) {
+        if(seconds > 0 && seconds <= secInDay){
+            duration = ::duration <int, milli> (seconds * 1000);
+            return true;
+        }
+        return false;
     }
 }
