@@ -45,3 +45,14 @@ bool Timer::setDuration(const unsigned int seconds) {
         return false;
     }
 }
+
+bool Timer::startTimer() {
+    if(duration != ::duration<int>::zero()){
+        if(!running){
+            start = steady_clock::now();
+            running = true;
+            return true;
+        }
+        return false;
+    }
+}
