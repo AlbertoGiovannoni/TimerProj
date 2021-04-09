@@ -56,3 +56,17 @@ bool Timer::startTimer() {
         return false;
     }
 }
+
+bool Timer::stopTimer(){
+    if(running){
+        running = false;
+        time_point<steady_clock> now = steady_clock::now();
+        ::duration<int, milli> remaining = duration - duration_cast<seconds>(now - start);
+        if(remaining.count() > 0){
+            duration = remaining;
+            return true;
+        }
+        return false;
+    }
+    return false;
+}
