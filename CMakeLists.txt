@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories(.)
 
-set(SOURCE_FILES Timer.cpp Timer.h)
+set(SOURCE_FILES Timer.cpp Timer.h Clock.cpp Clock.h)
 add_executable(timerlab main.cpp)
 add_library(core ${SOURCE_FILES})
 target_link_libraries(timerlab core)
