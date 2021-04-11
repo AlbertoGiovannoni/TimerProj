@@ -4,11 +4,14 @@
 
 #include "Timer.h"
 #include <cmath>
+#include <string>
 
 using namespace std;
 using namespace std::chrono;
 
-const int Timer::secInDay = 24*60*60;
+const int Timer::secInDay = 86400;
+const int Timer::secInHour = 3600;
+const int Timer::secInMin = 60;
 
 Timer::Timer() {
     start = steady_clock::now();
@@ -69,4 +72,53 @@ bool Timer::stopTimer(){
         return false;
     }
     return false;
+}
+
+void Timer::resetTimer() {
+    start = steady_clock::now();
+}
+
+bool Timer::isRunning() const {
+    return running;
+}
+
+int Timer::getMode() {
+    return mode;
+}
+
+void Timer::setMode(int m) {
+    mode = m;
+}
+
+string Timer::getStringDuration() {
+    int hours;
+    int min;
+    int sec;
+    string s;
+    string tmp;
+
+    sec = getDuration();
+    hours = (int) floor(sec/secInHour);
+    min = (sec - hours*secInHour) / secInMin;
+    sec = sec - hours*secInHour - min*secInMin;
+
+    switch(mode){
+        case 1:
+            if(hours != 0)
+                s = s + to_string(hours) + " h ";
+            if(hours != 0 || min != 0)
+                s = s + to_string(min) + " m ";
+            s = s + to_string(sec) + " s";
+            break;
+
+        case 2:
+            s = to_string(hours) + ":";
+            s += ((tmp = to_string(min)).length() == 2) ? tmp+":" : "0"+tmp+":";
+            s += ((tmp = to_string(sec)).length() == 2) ? tmp : "0"+tmp;
+            break;
+
+        default:
+            s = to_string(getDuration()) + " s";
+    }
+    return s;
 }

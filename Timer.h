@@ -4,7 +4,10 @@
 
 #ifndef TIMERLAB_TIMER_H
 #define TIMERLAB_TIMER_H
+
 #include "chrono"
+#include <string>
+
 
 using namespace std;
 using namespace std::chrono;
@@ -20,15 +23,25 @@ public:
 
         bool startTimer();
         bool stopTimer();
+        void resetTimer();
 
-        bool isRunning();
+        bool isRunning() const;
+
+        string getStringDuration();
+        int getMode();
+        void setMode(int m);
+
 
 private:
     bool running;
     time_point<steady_clock> start;
     ::duration<int, milli> duration;
 
+    int mode;
+
     static const int secInDay;
+    static const int secInHour;
+    static const int secInMin;
 };
 
 
