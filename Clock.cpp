@@ -7,14 +7,14 @@
 using namespace std;
 
 Clock::Clock() {
-    mode = 2;
+    mode = 1;
 }
 int Clock::getMode() const {
     return mode;
 }
 
 void Clock::setMode(int m) {
-    mode = m;
+    mode = m%3;
 }
 
 string Clock::getDate() const {
@@ -25,35 +25,34 @@ string Clock::getDate() const {
 
     switch(mode){
         case 1:
-            s += "'" + to_string(date.tm_year%100);
+            s += to_string(1900 + date.tm_year);
             tmp = to_string(date.tm_mon+1);
             s += "/" + (tmp.length() == 1 ? ('0'+tmp) : tmp);
             tmp = to_string(date.tm_mday);
             s += "/" + (tmp.length() == 1 ? ('0'+tmp) : tmp);
-
             break;
         case 2:
             switch (date.tm_wday){
                 case 0:
-                    s += "Domenica";
+                    s += "Dom";
                     break;
                 case 1:
-                    s += "Lunedì";
+                    s += "Lun";
                     break;
                 case 2:
-                    s += "Martedì";
+                    s += "Mar";
                     break;
                 case 3:
-                    s += "Mercoledì";
+                    s += "Mer";
                     break;
                 case 4:
-                    s += "Giovedì";
+                    s += "Gio";
                     break;
                 case 5:
-                    s += "Venerdì";
+                    s += "Ven";
                     break;
                 case 6:
-                    s += "Sabato";
+                    s += "Sab";
                     break;
 
             }
@@ -104,7 +103,7 @@ string Clock::getDate() const {
             s += tmp.length() == 1 ? ('0'+tmp) : tmp;
             tmp = to_string(date.tm_mon+1);
             s += "/" + (tmp.length() == 1 ? ('0'+tmp) : tmp);
-            s += "/'" + to_string(date.tm_year%100);
+            s += "/" + to_string(1900 + date.tm_year);
     }
     return s;
 }
@@ -120,20 +119,24 @@ string Clock::getTime() const {
             s += (tmp.length() == 1 ? ('0'+tmp) : tmp);
             tmp = to_string(date.tm_min);
             s += ":" + (tmp.length() == 1 ? ('0'+tmp) : tmp);
-            s += date.tm_hour < 12 ? "am" : "pm";
-
+            tmp = to_string(date.tm_sec);
+            s += ":" + (tmp.length() == 1 ? ('0'+tmp) : tmp);
+            s += date.tm_hour < 12 ? " am" : " pm";
+            break;
         case 2:
             tmp = to_string(date.tm_hour);
             s += (tmp.length() == 1 ? ('0'+tmp) : tmp);
             tmp = to_string(date.tm_min);
             s += ":" + (tmp.length() == 1 ? ('0'+tmp) : tmp);
             tmp = to_string(date.tm_sec);
-            s += " :" + (tmp.length() == 1 ? ('0'+tmp) : tmp);
+            s += ":" + (tmp.length() == 1 ? ('0'+tmp) : tmp);
             break;
         default:
             tmp = to_string(date.tm_hour);
             s += (tmp.length() == 1 ? ('0'+tmp) : tmp);
             tmp = to_string(date.tm_min);
+            s += ":" + (tmp.length() == 1 ? ('0'+tmp) : tmp);
+            tmp = to_string(date.tm_sec);
             s += ":" + (tmp.length() == 1 ? ('0'+tmp) : tmp);
     }
     return s;

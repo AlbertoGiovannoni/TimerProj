@@ -17,6 +17,7 @@ Timer::Timer() {
     start = steady_clock::now();
     duration = ::duration<int>::zero();
     running = false;
+    mode = 1;
 
 }
 
@@ -87,7 +88,7 @@ int Timer::getMode() {
 }
 
 void Timer::setMode(int m) {
-    mode = m;
+    mode = m%3;
 }
 
 string Timer::getStringDuration() {
@@ -112,7 +113,7 @@ string Timer::getStringDuration() {
             break;
 
         case 2:
-            s = to_string(hours) + ":";
+            s = (to_string(hours).length() == 1 ? ('0'+to_string(hours)) : to_string(hours)) + ":";
             s += ((tmp = to_string(min)).length() == 2) ? tmp+":" : "0"+tmp+":";
             s += ((tmp = to_string(sec)).length() == 2) ? tmp : "0"+tmp;
             break;
