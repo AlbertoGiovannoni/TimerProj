@@ -17,15 +17,15 @@ void Display::init() {
     nodelay(stdscr,true);
     keypad(stdscr,true);
 
-    timer.setDuration(20);
+    timer.setDuration(60);
     terminalHeight = getmaxy(stdscr);
     terminalWidth = getmaxx(stdscr);
     height = 10;
     width = 30;
 
-    timerWin = newwin(height, width, (terminalHeight-height*2 - 2)/2, (terminalWidth - width*3 + 2)/2);
-    clockWin = newwin(height, width, (terminalHeight-height*2 - 2)/2, (terminalWidth - width*3 + 2)/2 + width - 1);
-    text = newwin(height, width*3-2, (terminalHeight-height*2 - 2)/2 + height + 2, (terminalWidth - width*3 + 2)/2);
+    timerWin = newwin(height, width, (terminalHeight-height*2 - 2)/2, (terminalWidth - width*3 + 2)/2 + 5);
+    clockWin = newwin(height, width, (terminalHeight-height*2 - 2)/2, (terminalWidth - width*3 + 2)/2 + width +4);
+    text = newwin(height*0.8, width*2, (terminalHeight-height*2 - 2)/2 + height + 2, (terminalWidth - width*3 + 2)/2 + 5);
     refresh();
 
     do{
@@ -44,22 +44,23 @@ void Display::update() {
     werase(clockWin);
 
     wborder(timerWin, 0, 0, 0, 0, 0, 0, 0, 0);
-    wborder(clockWin, 0, 0, 0, 0, ACS_TTEE, ACS_TTEE, ACS_BTEE, ACS_BTEE);
-    mvwprintw(timerWin,2,10,"Timer");
-    mvwprintw(clockWin,0,0,"Clock");
+    wborder(clockWin, 0, 0, 0, 0, ACS_TTEE, 0, ACS_BTEE, 0);
+    wborder(text, 0, 0, 0, 0, 0, 0, 0, 0);
+    mvwprintw(timerWin,2,12,"Timer");
+    mvwprintw(clockWin,2,12,"Clock");
 
 
     if(timer.getDuration() == 0)
-        timerTime = "OUT OF TIME";
+        timerTime = "DRINNN!!!";
     else
         timerTime = timer.getStringDuration();
 
     date = clock.getDate();
     time = clock.getTime();
 
-    mvwprintw(timerWin, 1, width-timerTime.length(), &timerTime[0]);
-    mvwprintw(clockWin, 1, width-date.length(), &date[0]);
-    mvwprintw(clockWin, 1, width-time.length(), &time[0]);
+    mvwprintw(timerWin, 5, (width-timerTime.length())/2, &timerTime[0]);
+    mvwprintw(clockWin, 4, (width-date.length())/2, &date[0]);
+    mvwprintw(clockWin, 6, (width-time.length())/2, &time[0]);
 
     menu();
 
@@ -77,42 +78,32 @@ void Display::keyboard() {
         case 27:            //ESC KEY
             stop = true;
             break;
-        case KEY_UP:
+        case KEY_RIGHT:
             if(!timer.isRunning()) {
                 timer.setDuration(timer.getDuration() + 1);
             }
             break;
-        case KEY_DOWN:
+        case KEY_LEFT:
             if(!timer.isRunning()) {
                 timer.setDuration(timer.getDuration() - 1);
             }
             break;
         case '1':
             if(!timer.isRunning()) {
-                timer.setDuration(timer.getDuration() + 10);
+                timer.setDuration(timer.getDuration() + 60 );
             }
             break;
         case '2':
             if(!timer.isRunning()) {
-                timer.setDuration(timer.getDuration() - 10);
-            }
-            break;
-        case '6':
-            if(!timer.isRunning()) {
-                timer.setDuration(timer.getDuration() + 60 );
-            }
-            break;
-        case '7':
-            if(!timer.isRunning()) {
                 timer.setDuration(timer.getDuration() - 60);
             }
             break;
-        case '9':
+        case '3':
             if(!timer.isRunning()) {
                 timer.setDuration(timer.getDuration() + 3600);
             }
             break;
-        case '0':
+        case '4':
             if(!timer.isRunning()) {
                 timer.setDuration(timer.getDuration() - 3600);
             }
@@ -138,8 +129,10 @@ void Display::keyboard() {
 }
 
 void Display::menu() {
-    mvwprintw(text, 0, 1, "TIMER | S : start, T : stop, R : reset, W : view, UP : +1s, DOWN : -1s");
-    mvwprintw(text, 1, 1, "CLOCK | K : change view");
-    mvwprintw(text, 4, 1, "ESC : exit");
+    mvwprintw(text, 1, 1, "AGENDA:");
+    mvwprintw(text, 3, 1, "TIMER | S: start | T: stop | R: reset | W: format ");
+    mvwprintw(text, 4, 1, "TIMER | ->/1/3: +1s/1m/1h | <-/2/4: -1s/1m/1h");
+    mvwprintw(text, 5, 1, "CLOCK | K: format");
+    mvwprintw(text, 6, 1, "ESC: exit");
     wrefresh(text);
 }

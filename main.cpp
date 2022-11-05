@@ -5,11 +5,14 @@
 #include <iostream>
 #include "Timer.h"
 #include <ncurses.h>
+#include "Display.h"
 
 
 using namespace std;
 
-int main() {
 
+int main() {
+    Display d;
+    d.init();
     return 0;
 }

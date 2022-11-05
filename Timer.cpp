@@ -43,7 +43,7 @@ int Timer::getDuration() {
 bool Timer::setDuration(const unsigned int seconds) {
     if(!running) {
         if(seconds > 0 && seconds <= secInDay){
-            duration = ::duration <int, milli> (seconds * 1000);
+            duration = ::duration<int, milli>(seconds * 1000);
             return true;
         }
         return false;
