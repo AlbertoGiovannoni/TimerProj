@@ -14,7 +14,7 @@ const int Timer::secInHour = 3600;
 const int Timer::secInMin = 60;
 
 Timer::Timer() {
-    start = steady_clock::now();
+    start = steady_clock::now(); // salvo l'orario di partenza
     duration = ::duration<int>::zero();
     running = false;
     mode = 1;
@@ -27,11 +27,11 @@ const time_point<steady_clock> &Timer::getStart() const{
 
 int Timer::getDuration() {
     if(!running) {
-        return (int)round(duration.count()/1000);
+        return (int)round(duration.count()/1000); // divido per 1000 perchè il valore restituito è in millisecondi
     }
     else{
         time_point<steady_clock> now = steady_clock::now();
-        float r = ((duration - duration_cast<milliseconds>(now-start)).count()/1000.f);
+        float r = ((duration - duration_cast<milliseconds>(now-start)).count()/1000.f); // (ora attuale - ora di avvio convertito in millisecondi) / 1000
         int remaining = (int)ceil(r);
         if (remaining < 0){
             remaining = 0;
@@ -46,7 +46,7 @@ bool Timer::setDuration(const unsigned int seconds) {
             duration = ::duration<int, milli>(seconds * 1000);
             return true;
         }
-        return false;
+        return false; // in modo da non permettere inserimento di numeri negativi o un numero di secondi maggiore di un giorno
     }
 }
 
@@ -67,7 +67,7 @@ bool Timer::stopTimer(){
         time_point<steady_clock> now = steady_clock::now();
         ::duration<int, milli> remaining = duration - duration_cast<seconds>(now - start);
         if(remaining.count() > 0){
-            duration = remaining;
+            duration = remaining; // tempo rimanente allo scadere
             return true;
         }
         return false;
@@ -99,7 +99,7 @@ string Timer::getStringDuration() {
     string tmp;
 
     sec = getDuration();
-    hours = (int) floor(sec/secInHour);
+    hours = (int) floor(sec/secInHour); // calcolo delle ore, minuti, secondi
     min = (sec - hours*secInHour) / secInMin;
     sec = sec - hours*secInHour - min*secInMin;
 

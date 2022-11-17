@@ -18,7 +18,7 @@ void Clock::setMode(int m) {
 }
 
 string Clock::getDate() const {
-    time_t now = time(0);
+    time_t now = time(nullptr); // calcolo la data odierna
     tm date = *localtime(&now);
     string s;
     string tmp;
@@ -26,10 +26,10 @@ string Clock::getDate() const {
     switch(mode){
         case 1:
             s += to_string(1900 + date.tm_year);
-            tmp = to_string(date.tm_mon+1);
-            s += "/" + (tmp.length() == 1 ? ('0'+tmp) : tmp);
+            tmp = to_string(date.tm_mon + 1);
+            s += "/" + (tmp.length() == 1 ? ('0' + tmp) : tmp);
             tmp = to_string(date.tm_mday);
-            s += "/" + (tmp.length() == 1 ? ('0'+tmp) : tmp);
+            s += "/" + (tmp.length() == 1 ? ('0' + tmp) : tmp);
             break;
         case 2:
             switch (date.tm_wday){
@@ -109,7 +109,7 @@ string Clock::getDate() const {
 }
 
 string Clock::getTime() const {
-    time_t now = time(0);
+    time_t now = time(nullptr);
     tm date = *localtime(&now);
     string s;
     string tmp;

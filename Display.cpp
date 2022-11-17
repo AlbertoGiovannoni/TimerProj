@@ -13,9 +13,9 @@ Display::Display() {
 }
 
 void Display::init() {
-    initscr();
-    nodelay(stdscr,true);
-    keypad(stdscr,true);
+    initscr(); // avvia la modalità curses
+    nodelay(stdscr,true); // serve per azzerare il delay quando viene chiamato getch()
+    keypad(stdscr,true); // per poter usare i comandi da tastiera
 
     timer.setDuration(60);
     terminalHeight = getmaxy(stdscr);
@@ -23,13 +23,13 @@ void Display::init() {
     height = 10;
     width = 30;
 
-    timerWin = newwin(height, width, (terminalHeight-height*2 - 2)/2, (terminalWidth - width*3 + 2)/2 + 5);
+    timerWin = newwin(height, width, (terminalHeight-height*2 - 2)/2, (terminalWidth - width*3 + 2)/2 + 5); // creo i box
     clockWin = newwin(height, width, (terminalHeight-height*2 - 2)/2, (terminalWidth - width*3 + 2)/2 + width +4);
     text = newwin(height*0.8, width*2, (terminalHeight-height*2 - 2)/2 + height + 2, (terminalWidth - width*3 + 2)/2 + 5);
     refresh();
 
     do{
-        update();
+        update(); // aggiornamento continuo
     } while(!stop);
 
     endwin();
@@ -38,15 +38,15 @@ void Display::init() {
 
 void Display::update() {
     keyboard();
-    erase();
+    erase(); // pulisce i caratteri inseriti precedentemente
 
     werase(timerWin);
     werase(clockWin);
 
-    wborder(timerWin, 0, 0, 0, 0, 0, 0, 0, 0);
+    wborder(timerWin, 0, 0, 0, 0, 0, 0, 0, 0); // bordi dei box
     wborder(clockWin, 0, 0, 0, 0, ACS_TTEE, 0, ACS_BTEE, 0);
     wborder(text, 0, 0, 0, 0, 0, 0, 0, 0);
-    mvwprintw(timerWin,2,12,"Timer");
+    mvwprintw(timerWin,2,12,"Timer"); // stampe nei box
     mvwprintw(clockWin,2,12,"Clock");
 
 
@@ -68,11 +68,11 @@ void Display::update() {
     wrefresh(clockWin);
     wrefresh(text);
 
-    napms(100);
+    napms(100); // attende 100 ms a terminare
 }
 
 void Display::keyboard() {
-    int ch = getch();
+    int ch = getch(); // prende il carattere inserito
 
     switch(ch){
         case 27:            //ESC KEY
